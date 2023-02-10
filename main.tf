@@ -5,11 +5,10 @@ resource "null_resource" "execbluecat"{
   }
   provisioner "local-exec"{
     command = <<-EOT
-      pwd > /tmp/pwd.log
       curl "https://raw.githubusercontent.com/jmueller-hf/terraform-cln-bluecat/v1.12.0/main.py" -o main.py
       curl "https://raw.githubusercontent.com/jmueller-hf/terraform-cln-bluecat/v1.12.0/requirements.txt" -o requirements.txt
       pip3 install -r requirements.txt
-      python3 main.py --hostname "${var.hostname}" --value "${var.value}" --svcPassword "${var.password}" > /tmp/main.py.log
+      python3 main.py --hostname "${var.hostname}" --value "${var.value}" --svcPassword "${var.password}"
     EOT
   }
 }
