@@ -9,14 +9,6 @@ resource "aws_lambda_invocation" "aRecord" {
     JSON
 }
 
-output "bc_objectId" {
-  value = jsondecode(resource.aws_lambda_invocation.aRecord.result)
-}
-
-output "fqdn" {
-  value = "${var.hostname}.${var.domain}"
-}
-
 data "aws_lambda_invocation" "deploy" {
   function_name = "cln-BlueCat-Stack-clnBlueCatQuickDeploy-I9h4EumoYJw9"
   input = <<JSON
