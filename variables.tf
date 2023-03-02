@@ -1,15 +1,11 @@
-variable "hostname" {
+variable "hostname"{
     type = string
 }
 
-variable "value" {
+variable "ipAddr"{
     type = string
 }
 
-#variable "recordType" {
-#    type = string
-#}
-
-variable "password" {
+variable "domain"{
     type = string
 }
