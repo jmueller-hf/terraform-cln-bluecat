@@ -1,14 +1,26 @@
-resource "null_resource" "execbluecat"{
-  triggers = {
-    #Forces TF to always replace this resource, thus always run the command.
-    timestamp = "${timestamp()}"
-  }
-  provisioner "local-exec"{
-    command = <<-EOT
-      curl "https://raw.githubusercontent.com/jmueller-hf/terraform-cln-bluecat/v1.14.0/main.py" -s -o main.py 
-      curl "https://raw.githubusercontent.com/jmueller-hf/terraform-cln-bluecat/v1.14.0/requirements.txt" -s -o requirements.txt 
-      pip3 install -r requirements.txt
-      python3 main.py --hostname "${var.hostname}" --value "${var.value}" --svcPassword "${var.password}"
-    EOT
-  }
+resource "aws_lambda_invocation" "aRecord" {
+  function_name = "cln-BlueCat-Stack-clnBlueCatARecordCreate-DzMYae1wc7Do"
+  input = <<JSON
+    {
+    "hostname": "${var.hostname}",
+    "domain": "${var.domain}",
+    "ipAddress": "${var.ipAddr}"
+    }
+    JSON
+}
+
+output "bc_objectId" {
+  value = jsondecode(resource.aws_lambda_invocation.aRecord.result)
+}
+
+output "fqdn" {
+  value = "${var.hostname}.${var.domain}"
+}
+
+data "aws_lambda_invocation" "deploy" {
+  function_name = "cln-BlueCat-Stack-clnBlueCatQuickDeploy-I9h4EumoYJw9"
+  input = <<JSON
+      {
+      }
+      JSON
 }
