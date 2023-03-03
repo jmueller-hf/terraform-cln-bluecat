@@ -9,10 +9,11 @@ resource "aws_lambda_invocation" "aRecord" {
     JSON
 }
 
-data "aws_lambda_invocation" "deploy" {
+resource "aws_lambda_invocation" "deploy" {
   function_name = "cln-BlueCat-Stack-clnBlueCatQuickDeploy-I9h4EumoYJw9"
   input = <<JSON
       {
+      "hostname": "${var.hostname}"
       }
       JSON
 }
